@@ -40,34 +40,47 @@ def parseHTMLForTables(tree):
 					except:
 						pass;
 				try:
-					if(str(td.text) != "None"):
+					#remove unwanted rows...
+					if((str(td.text) != "None") and (str(td.text) != "Name") and (str(td.text) != "Number of items") and (str(td.text) != "Description") and (str(td.text) != "Nodes")  and (str(td.text) != "Edges")):
 						entry.append(td.text)
 						#print "column: ",td.text
 				except:
 					pass;
-			data.append(entry)
 
-	for entry in data:
-		print entry
-						#pass;
-	# extractedTables = tree.xpath('//*[@id="datatab2"]')
-	# xpath1 = "//*/tr"
+			if len(entry) > 3:
+				data.append(entry)
 
-	# rows = tree.xpath(xpath1)
-	# data = list()
-	# for row in rows:
-	#     data.append([c.text for c in row.getchildren()])
-	    #print row.getchildren()[0].text_content()
-	    #print row.getchildren()[0].get('text')
-	#for item in data:
-		#print item
+	# for entry in data:
+	# 	print entry
 
-	# for table in extractedTables:
-	# 	#//*[@id="datatab2"]/tbody/tr[2]/td[1]/a
-	# 	print table
-	#print extractedTables;
+	return data
+
+def createWOMetadata(datasets):
+
+	htmlEntries = []
+	for entry in datasets:
+		entryHTML = "<div itemscope itemtype=\"http://schema.org/WebObservatory\">"
+		#link = entry[0];
+		if(".html" not in entry.[1]):
+			title = entry[1]
+		else:
+			title = entry[2]
+		for atom in entry:
+			if '.html' in atom:
+				link = atom
+		
+		desc = ""
+		for x in range(2, len(entry)):
+			desc = desc + " " + entry[x]
+		print "title: " , title
+		print "link: " , link
+		print "desc: " , desc
 
 
+
+		entryHTML = entryHTML +  "</div>"
+
+	htmlEntries.append(entryHTML)
 
 def run():
 	#get the tweets
@@ -75,8 +88,8 @@ def run():
 	print "Getting HTML file"
 	urlToRetrieve = "http://snap.stanford.edu/data/index.html"
 	htmlTree = getHTMLPage(urlToRetrieve)
-	parseHTMLForTables(htmlTree)
-
+	datasets = parseHTMLForTables(htmlTree)
+	htmlToInsert = createWOMetadata(datasets)
 
 
 
