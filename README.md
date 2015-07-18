@@ -9,7 +9,7 @@ Use the SNAP_metadata_embedder.py
 ##Dependencies
 Python Modules:
 
-lxml 
+lxml
 pyquery
 requests
 urllib
