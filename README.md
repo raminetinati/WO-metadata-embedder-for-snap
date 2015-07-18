@@ -1,4 +1,4 @@
-# WO-metadata-embedder-for-snap
+# Web Observatory Metadata generator for SNAP
 A collection of python scripts to generates the Web Observatory schema.org metadata for the SNAP static files 
 
 ##Use
