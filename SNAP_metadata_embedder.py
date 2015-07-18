@@ -59,12 +59,13 @@ def createWOMetadata(datasets):
 
 	htmlEntries = []
 	for entry in datasets:
-		entryHTML = "<div itemscope itemtype=\"http://schema.org/WebObservatory\">"
+		entryHTML = "<div itemscope itemtype=\"http://schema.org/Dataset/WebObservatory\">"
 		#link = entry[0];
-		if(".html" not in entry.[1]):
+		if(".html" not in entry[1]):
 			title = entry[1]
 		else:
 			title = entry[2]
+
 		for atom in entry:
 			if '.html' in atom:
 				link = atom
@@ -72,15 +73,28 @@ def createWOMetadata(datasets):
 		desc = ""
 		for x in range(2, len(entry)):
 			desc = desc + " " + entry[x]
-		print "title: " , title
-		print "link: " , link
-		print "desc: " , desc
 
+		if("http" not in link):
+			link = "http://snap.stanford.edu/data/"+link
 
+		# print "title: " , title
+		# print "link: " , link
+		# print "desc: " , desc
 
+		publisher = "<meta itemprop=\"http://schema.org/provider\" content=\"SNAP - Stanford\">"
+
+		entryHTML = entryHTML + " <meta itemprop=\"http://schema.org/name\" content=\""+title+"\">"
+		entryHTML = entryHTML + "  <meta itemprop=\"http://schema.org/url\" content=\""+link+"\">"
+		entryHTML = entryHTML + "  <meta itemprop=\"http://schema.org/description\" content=\""+desc+"\">"
+		entryHTML = entryHTML + publisher
 		entryHTML = entryHTML +  "</div>"
 
-	htmlEntries.append(entryHTML)
+		htmlEntries.append(entryHTML)
+
+	output = open("metadata.html","w")
+	for ht in htmlEntries:
+		output.write(ht+"\n")
+	output.close()
 
 def run():
 	#get the tweets
